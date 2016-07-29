@@ -8,6 +8,7 @@ public class AISettings {
 	
 	public NeuralSettings neuralSettings = this.new NeuralSettings();
 	public GenerationSettings generationSettings = this.new GenerationSettings();
+	public LoggingSettings loggingSettings = this.new LoggingSettings();
 	
 	public class NeuralSettings{
 		public int[] nodesPerLayer = {};
@@ -25,6 +26,7 @@ public class AISettings {
 	public class LoggingSettings{
 		public boolean printAnything = true;
 		public boolean printAll = true;
+		public boolean printAverage = true;
 		public boolean printTop = true;
 		public int topAmount = 10;
 	}
