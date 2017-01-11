@@ -11,7 +11,7 @@ public class LearningIntelligence {
 	public NeuralNetwork neuralNet = new NeuralNetwork();
 	public GeneticAlgorithm geneticAlg = new GeneticAlgorithm();
 	
-	public int highestFitness = 0;
+	public float highestFitness = 0;
 	public int generation = 0;
 	public int speciesNumber = 0; // Only used if going through each child separately.
 	
@@ -81,13 +81,13 @@ public class LearningIntelligence {
 	}
 	
 	// Only use if going through each child separately.
-	public void setFitness(int fitness){
+	public void setFitness(float fitness){
 		geneticAlg.children.get(speciesNumber).fitness = fitness;
 		if(fitness > highestFitness) highestFitness = fitness;
 	}
 	
 	// -Only use if NOT going through each child separately.
-	public void setFitness(int child, int fitness){
+	public void setFitness(int child, float fitness){
 		geneticAlg.children.get(child).fitness = fitness;
 		if(fitness > highestFitness) highestFitness = fitness;
 	}

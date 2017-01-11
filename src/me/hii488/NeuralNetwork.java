@@ -9,10 +9,10 @@ public class NeuralNetwork {
 	
 	public class Child{
 		public Layer[] layers;
-		public int fitness = 0;
+		public float fitness = 0;
 		
 		public Child(){
-			layers = new Layer[settings.nodesPerLayer.length];
+			layers = new Layer[settings.nodesInHiddenLayers.length+1];
 			for(int i = 0; i < layers.length; i++){
 				layers[i] = new Layer(i);
 			}
@@ -39,7 +39,13 @@ public class NeuralNetwork {
 		public Layer(int level){
 			layerLevel = level;
 			
-			nodes = new Node[settings.nodesPerLayer[level]];
+			if(layerLevel != settings.nodesInHiddenLayers.length){
+				nodes = new Node[settings.nodesInHiddenLayers[level]];
+			}
+			else{
+				nodes = new Node[settings.outputs.length];
+			}
+			
 			for(int i = 0; i < nodes.length; i++){
 				nodes[i] = new Node(layerLevel, i);
 			}
@@ -67,7 +73,7 @@ public class NeuralNetwork {
 			
 			nodeNumber = number;
 			
-			weights = new float[(level != 0 ? settings.nodesPerLayer[level-1] : 100) + 1];
+			weights = new float[(level != 0 ? settings.nodesInHiddenLayers[level-1] : settings.inputs) + 1];
 		}
 		
 		private Node(Node n){

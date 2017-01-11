@@ -12,7 +12,7 @@ public class AISettings {
 	public LoggingSettings loggingSettings = this.new LoggingSettings();
 	
 	public class NeuralSettings{
-		public int[] nodesPerLayer = {};			// The amount of nodes each layer of the net will have, limits depend on capabilities of system. Last layer should be same length as # of outputs
+		public int[] nodesInHiddenLayers = {};		// The amount of nodes each hidden layer of the net will have, limits depend on capabilities of system
 		public int inputs = 0;              		// The amount of inputs the neural net will be given
 		public String[] outputs = {};       		// The outputs you wish the neural net to give out
 		public float cutoffThreshhold = 0;  		// How high a value has to be to count as "pressed", recommended is > 0.5f, max is 1f
@@ -37,7 +37,7 @@ public class AISettings {
 	
 	public void printSettings(boolean neural, boolean generation, boolean logging){
 		if(neural){
-			System.out.println("Nodes per Layer: " + Arrays.toString(neuralSettings.nodesPerLayer));
+			System.out.println("Nodes in hidden layers: " + Arrays.toString(neuralSettings.nodesInHiddenLayers));
 			if(!neuralSettings.outputsAsFloats) System.out.println("outputs: " + Arrays.toString(neuralSettings.outputs));
 			System.out.println("cutoffThreshhold: " + neuralSettings.cutoffThreshhold);
 		}

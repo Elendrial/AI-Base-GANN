@@ -83,7 +83,7 @@ public class GeneticAlgorithm {
 		
 		for(int i = 0; i < child.layers.length; i++){
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
-				final int crosspoint = AISettings.rand.nextInt(i == 0 ? neuralNet.settings.inputs : neuralNet.settings.nodesPerLayer[i-1]);
+				final int crosspoint = AISettings.rand.nextInt(i == 0 ? neuralNet.settings.inputs : neuralNet.settings.nodesInHiddenLayers[i-1]);
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(k >= crosspoint){
 						child.layers[i].nodes[j].weights[k] = b.layers[i].nodes[j].weights[k];
@@ -114,13 +114,24 @@ public class GeneticAlgorithm {
 	}
 	
 	public float[] recurrentOutput(float[] inputs, int child, int layer){
-		float[] output = new float[neuralNet.settings.nodesPerLayer[layer]];
-		
-		for(int i = 0; i < neuralNet.settings.nodesPerLayer[layer]; i++){
-			output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
+		if(layer < neuralNet.settings.nodesInHiddenLayers.length-1){
+			float[] output = new float[neuralNet.settings.nodesInHiddenLayers[layer]];
+			
+			for(int i = 0; i < neuralNet.settings.nodesInHiddenLayers[layer]; i++){
+				output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
+			}
+			
+			return recurrentOutput(output, child, layer+1);
 		}
-		
-		return layer < neuralNet.settings.nodesPerLayer.length-1 ? recurrentOutput(output, child, layer+1) : output;
+		else{
+			float[] output = new float[neuralNet.settings.outputs.length];
+			
+			for(int i = 0; i < neuralNet.settings.nodesInHiddenLayers[layer]; i++){
+				output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
+			}
+			
+			return output;
+		}
 	}
 	
 	
