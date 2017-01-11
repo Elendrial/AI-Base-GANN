@@ -56,21 +56,26 @@ public class GeneticAlgorithm {
 	}
 	
 	
-	public Child rouletteChoice(ArrayList<Child> children){
+	public Child rouletteChoice(ArrayList<Child> incChildren){
+		ArrayList<Child> sortedChildren;
+		if(settings.mixTop != -1)
+			sortedChildren = new ArrayList<Child>(fitnessSortedChildren(incChildren).subList(incChildren.size()-1-settings.mixTop, incChildren.size()-1));
+		else 
+			sortedChildren = incChildren;
 		
 		int totalFitness = 0;
-		for(int i = 0; i < children.size(); i++){
-			totalFitness += children.get(i).fitness;
+		for(int i = 0; i < sortedChildren.size(); i++){
+			totalFitness += sortedChildren.get(i).fitness;
 		}
-		
+			
 		double value = AISettings.rand.nextDouble() * totalFitness;
-		
-		for(int i = 0; i < children.size(); i++){
-			value -= children.get(i).fitness;
-			if(value <= 0) return children.get(i);
+			
+		for(int i = 0; i < sortedChildren.size(); i++){
+			value -= sortedChildren.get(i).fitness;
+			if(value <= 0) return sortedChildren.get(i);
 		}
-		
-		return children.get(children.size()-1);
+			
+		return sortedChildren.get(sortedChildren.size()-1);
 	}
 	
 	public Child spliceChildren(Child a, Child b){
@@ -95,7 +100,7 @@ public class GeneticAlgorithm {
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(AISettings.rand.nextFloat() <= settings.mutationChance){
-						child.layers[i].nodes[j].weights[k] += (AISettings.rand.nextBoolean() == true) ? (AISettings.rand.nextFloat()/2) * -1 : AISettings.rand.nextFloat()/2;
+						child.layers[i].nodes[j].weights[k] += (AISettings.rand.nextBoolean() == true) ? (AISettings.rand.nextFloat()/5) * -1 : AISettings.rand.nextFloat()/5;
 					}
 				}
 			}
@@ -136,19 +141,25 @@ public class GeneticAlgorithm {
 		}
 		return childPool;*/
 		
+		ArrayList<Child> listToUse = new ArrayList<Child>();
+		
+		for(int i = 0; i < children2.size(); i++){
+			listToUse.add(children2.get(i).clone());
+		}
+		
 		int i,j;
 
-		for (i = 1; i < children2.size(); i++) {
-			Child c = children2.get(i);
+		for (i = 1; i < listToUse.size(); i++) {
+			Child c = listToUse.get(i);
 			j = i;
-			while((j > 0) && (children2.get(j - 1).fitness > c.fitness)) {
-				children2.set(j,children2.get(j - 1));
+			while((j > 0) && (listToUse.get(j - 1).fitness > c.fitness)) {
+				listToUse.set(j,listToUse.get(j - 1));
 				j--;
 			}
-			children2.set(j,c);
+			listToUse.set(j,c);
 		}
 		    
-		return children2;
+		return listToUse;
 	}
 	
 }

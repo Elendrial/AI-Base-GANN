@@ -13,11 +13,12 @@ public class LearningIntelligence {
 	
 	public int highestFitness = 0;
 	public int generation = 0;
-	public int speciesNumber = 0;
+	public int speciesNumber = 0; // Only used if going through each child separately.
 	
 	public float[] lastOutputValue = {};
 	public String[] lastOutput = {};
 	
+	// Must run *AFTER* settings have been set.
 	public void initialSetup(){
 		neuralNet.settings = this.settings.neuralSettings;
 		geneticAlg.settings = this.settings.generationSettings;
@@ -27,7 +28,7 @@ public class LearningIntelligence {
 		geneticAlg.makeRandomGeneration();
 	}
 	
-	
+	// Only use if going through each child separately.
 	public void nextSpecies(){
 		if(speciesNumber + 1 < geneticAlg.children.size()){
 			speciesNumber++;
@@ -41,8 +42,24 @@ public class LearningIntelligence {
 		}
 	}
 	
+	// -Only use if NOT going through each child separately.
+	public void nextGeneration(){
+		if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) printFitnesses();
+		else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) printTop(this.settings.loggingSettings.topAmount);
+		else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) printAverage();
+			
+		geneticAlg.nextGeneration();
+		generation++;
+	}
+
+	// Only use if going through each child separately.
 	public String[] getOutputs(float[] inputs){
-		float[] f = geneticAlg.getOutputs(inputs, speciesNumber);
+		return getOutputs(speciesNumber, inputs);
+	}
+	
+	// -Only use if NOT going through each child separately.
+	public String[] getOutputs(int child, float[] inputs){
+		float[] f = geneticAlg.getOutputs(inputs, child);
 		this.lastOutputValue = f;
 		
 		String[] s = outputValuesToString(f);
@@ -51,19 +68,27 @@ public class LearningIntelligence {
 		return s;
 	}
 	
-	public String[] outputValuesToString(float[] outputValues){
+ 	public String[] outputValuesToString(float[] outputValues){
 		String[] s = new String[neuralNet.settings.outputs.length];
 		
-		for(int i = 0; i < neuralNet.settings.outputs.length; i++)
-			if(outputValues[i] >= neuralNet.settings.cutoffThreshhold) s[i] = (neuralNet.settings.outputs[i]);
-			else s[i] = "";
-		
+		if(!settings.neuralSettings.outputsAsFloats)
+			for(int i = 0; i < neuralNet.settings.outputs.length; i++)
+				if(outputValues[i] >= neuralNet.settings.cutoffThreshhold) s[i] = (neuralNet.settings.outputs[i]);
+				else s[i] = "";
+		else for(int i = 0; i < neuralNet.settings.outputs.length; i++) s[i] = "" + outputValues[i];
 		
 		return s;
 	}
 	
+	// Only use if going through each child separately.
 	public void setFitness(int fitness){
 		geneticAlg.children.get(speciesNumber).fitness = fitness;
+		if(fitness > highestFitness) highestFitness = fitness;
+	}
+	
+	// -Only use if NOT going through each child separately.
+	public void setFitness(int child, int fitness){
+		geneticAlg.children.get(child).fitness = fitness;
 		if(fitness > highestFitness) highestFitness = fitness;
 	}
 	
@@ -80,12 +105,29 @@ public class LearningIntelligence {
 	
 	public void printTop(int amount){
 		System.out.println("Generation " + generation + " top fitnesses:");
-		@SuppressWarnings("unchecked")
-		ArrayList<Child> c = geneticAlg.fitnessSortedChildren((ArrayList<Child>) geneticAlg.children.clone());
+		ArrayList<Child> c = geneticAlg.fitnessSortedChildren((ArrayList<Child>) geneticAlg.children);
 		for(int i = 0; i < amount; i++)	System.out.println(i + " : " + c.get(c.size()-i-1).fitness);
+		
+		if(settings.loggingSettings.printAverage){
+			int totalFitness =0;
+			for(int i = 0; i < geneticAlg.children.size(); i++){
+				totalFitness += geneticAlg.children.get(i).fitness;
+			}
+			System.out.println("Average Fitness: " + totalFitness / geneticAlg.children.size());
+		}
+		
 		System.out.println("");
 	}
 	
+	public void printAverage() {
+		int totalFitness =0;
+		for(int i = 0; i < geneticAlg.children.size(); i++){
+			totalFitness += geneticAlg.children.get(i).fitness;
+		}
+		System.out.println("Generation #" + generation + " Average Fitness: " + totalFitness / geneticAlg.children.size());
+	}
+	
+	// Only use if going through each child separately.
 	public void displayOutputs(Graphics g, int x, int y, int distanceBetween, boolean interpolate, boolean showIfNotAboveThreshhold){
 		Color c = g.getColor();
 		float[] f = lastOutputValue;
