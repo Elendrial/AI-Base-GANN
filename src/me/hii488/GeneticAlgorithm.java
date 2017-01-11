@@ -39,11 +39,17 @@ public class GeneticAlgorithm {
 		Child parentB;
 		for(int i = 0; i < settings.childrenPerGeneration; i++){
 			parentA = rouletteChoice(children);
-			parentB = rouletteChoice(children);
+			do{parentB = rouletteChoice(children);} while(parentB == parentA);
 			
 			Child child = spliceChildren(parentA, parentB);
 			child = mutateChild(child);
-			childPool.add(child);
+			
+			boolean different = true;
+			for(int j = 0; j < childPool.size() && !different; j++){
+				if(NeuralNetwork.areSimilar(child, childPool.get(j))) different = false;
+			}
+			
+			if(different) childPool.add(child);
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -59,11 +65,11 @@ public class GeneticAlgorithm {
 	public Child rouletteChoice(ArrayList<Child> incChildren){
 		ArrayList<Child> sortedChildren;
 		if(settings.mixTop != -1)
-			sortedChildren = new ArrayList<Child>(fitnessSortedChildren(incChildren).subList(incChildren.size()-1-settings.mixTop, incChildren.size()-1));
+			sortedChildren = new ArrayList<Child>(fitnessSortedChildren(incChildren).subList(incChildren.size()-1-settings.mixTop, incChildren.size()));
 		else 
 			sortedChildren = incChildren;
 		
-		int totalFitness = 0;
+		float totalFitness = 0;
 		for(int i = 0; i < sortedChildren.size(); i++){
 			totalFitness += sortedChildren.get(i).fitness;
 		}
@@ -84,6 +90,7 @@ public class GeneticAlgorithm {
 		for(int i = 0; i < child.layers.length; i++){
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
 				final int crosspoint = AISettings.rand.nextInt(i == 0 ? neuralNet.settings.inputs : neuralNet.settings.nodesInHiddenLayers[i-1]);
+				temp();
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(k >= crosspoint){
 						child.layers[i].nodes[j].weights[k] = b.layers[i].nodes[j].weights[k];

@@ -7,6 +7,22 @@ public class NeuralNetwork {
 	
 	public NeuralSettings settings;
 	
+	public static boolean areSimilar(Child a, Child b){
+		if(a.layers.length != b.layers.length) return false;
+		
+		for(int layer = 0; layer < a.layers.length; layer++){
+			if(a.layers[layer].nodes.length != b.layers[layer].nodes.length) return false;
+			for(int node = 0; node < a.layers[layer].nodes.length; node++){
+				if(a.layers[layer].nodes[node].weights.length != b.layers[layer].nodes[node].weights.length) return false;
+				for(int weight = 0; weight < a.layers[layer].nodes[node].weights.length; weight++){
+					if(a.layers[layer].nodes[node].weights[weight] != b.layers[layer].nodes[node].weights[weight]) return false;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	public class Child{
 		public Layer[] layers;
 		public float fitness = 0;
