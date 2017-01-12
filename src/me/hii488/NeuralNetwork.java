@@ -42,6 +42,7 @@ public class NeuralNetwork {
 			fitness = c.fitness;
 		}
 		
+		@Override
 		public Child clone(){
 			return new Child(this);
 		}
@@ -76,6 +77,7 @@ public class NeuralNetwork {
 			}
 		}
 		
+		@Override
 		public Layer clone(){
 			return new Layer(this);
 		}
@@ -94,9 +96,10 @@ public class NeuralNetwork {
 		
 		private Node(Node n){
 			nodeNumber = n.nodeNumber;
-			weights = n.weights;
+			weights = n.weights.clone();
 		}
 		
+		@Override
 		public Node clone(){
 			return new Node(this);
 		}

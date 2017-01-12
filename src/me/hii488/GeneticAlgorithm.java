@@ -37,17 +37,20 @@ public class GeneticAlgorithm {
 		
 		Child parentA;
 		Child parentB;
-		for(int i = 0; i < settings.childrenPerGeneration; i++){
+		while(childPool.size() < settings.childrenPerGeneration){
 			parentA = rouletteChoice(children);
-			do{parentB = rouletteChoice(children);} while(parentB == parentA);
+			do{parentB = rouletteChoice(children);} while(NeuralNetwork.areSimilar(parentA, parentB));
+			
+			if(this.settings.debug)	System.out.println("Parent A: " + parentA.fitness + "\nParent B: " + parentB.fitness);
 			
 			Child child = spliceChildren(parentA, parentB);
 			child = mutateChild(child);
 			
 			boolean different = true;
-			for(int j = 0; j < childPool.size() && !different; j++){
-				if(NeuralNetwork.areSimilar(child, childPool.get(j))) different = false;
-			}
+			if(settings.insureDifferent)  // Just to insure you're not doing the same thing twice
+				for(int j = 0; j < childPool.size() && different; j++)
+					if(NeuralNetwork.areSimilar(child, childPool.get(j))) different = false;
+				
 			
 			if(different) childPool.add(child);
 		}
@@ -89,8 +92,8 @@ public class GeneticAlgorithm {
 		
 		for(int i = 0; i < child.layers.length; i++){
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
-				final int crosspoint = AISettings.rand.nextInt(i == 0 ? neuralNet.settings.inputs : neuralNet.settings.nodesInHiddenLayers[i-1]);
-				temp();
+				final int crosspoint = AISettings.rand.nextInt(i == 0 ? neuralNet.settings.inputs : child.layers[i].nodes[j].weights.length-2)+1;
+				if(this.settings.debug) System.out.println("Crosspoint: " + crosspoint);
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(k >= crosspoint){
 						child.layers[i].nodes[j].weights[k] = b.layers[i].nodes[j].weights[k];

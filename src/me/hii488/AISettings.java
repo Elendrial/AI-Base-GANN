@@ -24,6 +24,9 @@ public class AISettings {
 		public int additionalTopChildrenKept = 0;   // The amount of children with highscores carried on between generations, to prevent possible accidental regression
 		public float mutationChance = 0;            // The chance of each one of a new child's weights randomly changing, recommended is very small, max is 1f 
 		public int mixTop = -1;						// The amount of children that can be mixed to make the next generation, -1 means all children can be
+		public boolean insureDifferent = false;     // Insures that all children per generation are unique - not necessary, and possibly expensive to check
+		
+		public boolean debug = false;				// prints a load of stuff to console, would not recommend having on.
 	}
 	
 	public class LoggingSettings{
