@@ -34,8 +34,12 @@ public class LearningIntelligence {
 			speciesNumber++;
 		}
 		else{
-			if(this.settings.loggingSettings.printTop) printTop(this.settings.loggingSettings.topAmount);
-			if(this.settings.loggingSettings.printAll) printFitnesses();
+			this.geneticAlg.sortedChildren = geneticAlg.fitnessSortedChildren(geneticAlg.children);
+			
+			if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) printFitnesses();
+			else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) printTop(this.settings.loggingSettings.topAmount);
+			else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) printAverage();
+			
 			geneticAlg.nextGeneration();
 			speciesNumber = 0;
 			generation++;
@@ -44,6 +48,8 @@ public class LearningIntelligence {
 	
 	// -Only use if NOT going through each child separately.
 	public void nextGeneration(){
+		this.geneticAlg.sortedChildren = geneticAlg.fitnessSortedChildren(geneticAlg.children);
+		
 		if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) printFitnesses();
 		else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) printTop(this.settings.loggingSettings.topAmount);
 		else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) printAverage();
@@ -105,7 +111,7 @@ public class LearningIntelligence {
 	
 	public void printTop(int amount){
 		System.out.println("Generation " + generation + " top fitnesses:");
-		ArrayList<Child> c = geneticAlg.fitnessSortedChildren((ArrayList<Child>) geneticAlg.children);
+		ArrayList<Child> c = geneticAlg.sortedChildren;
 		for(int i = 0; i < amount; i++)	System.out.println(i + " : " + c.get(c.size()-i-1).fitness);
 		
 		if(settings.loggingSettings.printAverage){

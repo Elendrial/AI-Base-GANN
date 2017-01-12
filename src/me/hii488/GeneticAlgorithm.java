@@ -11,6 +11,7 @@ public class GeneticAlgorithm {
 	public GenerationSettings settings;
 	
 	public ArrayList<Child> children = new ArrayList<Child>();
+	ArrayList<Child> sortedChildren = new ArrayList<Child>();
 	
 	// TODO: Switch all the for loops to foreach loops
 	public void makeRandomGeneration(){
@@ -50,41 +51,41 @@ public class GeneticAlgorithm {
 			if(settings.insureDifferent)  // Just to insure you're not doing the same thing twice
 				for(int j = 0; j < childPool.size() && different; j++)
 					if(NeuralNetwork.areSimilar(child, childPool.get(j))) different = false;
-				
+			
+			if(different)
+				for(int j = 0; j < settings.additionalTopChildrenKept && different; j++)
+					if(NeuralNetwork.areSimilar(child, sortedChildren.get(sortedChildren.size() - 1 - j))) different = false;
 			
 			if(different) childPool.add(child);
 		}
 		
-		@SuppressWarnings("unchecked")
-		ArrayList<Child> childPool2 = this.fitnessSortedChildren((ArrayList<Child>) children.clone());
-		
 		for(int i = settings.additionalTopChildrenKept -1; i >= 0; i--)
-			childPool.add(childPool2.get(childPool2.size() - 1 - i));
+			childPool.add(sortedChildren.get(sortedChildren.size() - 1 - i));
 		
 		children = childPool;
 	}
 	
 	
 	public Child rouletteChoice(ArrayList<Child> incChildren){
-		ArrayList<Child> sortedChildren;
+		ArrayList<Child> sChildren;
 		if(settings.mixTop != -1)
-			sortedChildren = new ArrayList<Child>(fitnessSortedChildren(incChildren).subList(incChildren.size()-1-settings.mixTop, incChildren.size()));
+			sChildren = new ArrayList<Child>(sortedChildren.subList(incChildren.size()-1-settings.mixTop, incChildren.size()));
 		else 
-			sortedChildren = incChildren;
+			sChildren = incChildren;
 		
 		float totalFitness = 0;
-		for(int i = 0; i < sortedChildren.size(); i++){
-			totalFitness += sortedChildren.get(i).fitness;
+		for(int i = 0; i < sChildren.size(); i++){
+			totalFitness += sChildren.get(i).fitness;
 		}
 			
 		double value = AISettings.rand.nextDouble() * totalFitness;
 			
-		for(int i = 0; i < sortedChildren.size(); i++){
-			value -= sortedChildren.get(i).fitness;
-			if(value <= 0) return sortedChildren.get(i);
+		for(int i = 0; i < sChildren.size(); i++){
+			value -= sChildren.get(i).fitness;
+			if(value <= 0) return sChildren.get(i);
 		}
 			
-		return sortedChildren.get(sortedChildren.size()-1);
+		return sChildren.get(sChildren.size()-1);
 	}
 	
 	public Child spliceChildren(Child a, Child b){
