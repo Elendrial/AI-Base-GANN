@@ -158,7 +158,10 @@ public class LearningIntelligence {
 		g.setColor(c);
 	}
 	
-	public String getGenerationPrintAsString(){
+	public String getGenerationInfoAsString(){
+		if(this.settings.loggingSettings.printAll) return printFitnesses();
+		else if(this.settings.loggingSettings.printTop) return printTop(this.settings.loggingSettings.topAmount);
+		else if(this.settings.loggingSettings.printAverage) return printAverage();
 		else return "";
 	}
 }
