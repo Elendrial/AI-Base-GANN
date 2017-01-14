@@ -121,48 +121,27 @@ public class GeneticAlgorithm {
 	
 	// Not strictly necessary
 	public float[] getOutputs(float[] inputs, int child){
-		return recurrentOutput(inputs, child, 1);
+		return recurrentOutput(inputs, child, 0);
 	}
 	
 	public float[] recurrentOutput(float[] inputs, int child, int layer){
-		if(layer < neuralNet.settings.nodesInHiddenLayers.length-1){
-			float[] output = new float[neuralNet.settings.nodesInHiddenLayers[layer]];
-			
-			for(int i = 0; i < neuralNet.settings.nodesInHiddenLayers[layer]; i++){
-				output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
-			}
-			
-			return recurrentOutput(output, child, layer+1);
+		float[] output;
+		
+		if(layer < neuralNet.settings.nodesInHiddenLayers.length)
+			output = new float[neuralNet.settings.nodesInHiddenLayers[layer]];
+		
+		else
+			output = new float[neuralNet.settings.outputs.length];
+				
+		for(int i = 0; i < output.length; i++){
+			output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
 		}
-		else{
-			float[] output = new float[neuralNet.settings.outputs.length];
-			
-			for(int i = 0; i < neuralNet.settings.nodesInHiddenLayers[layer]; i++){
-				output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
-			}
-			
-			return output;
-		}
+		
+		return output;
 	}
 	
 	
 	public ArrayList<Child> fitnessSortedChildren(ArrayList<Child> children2) {
-	/*	ArrayList<Child> childPool = new ArrayList<Child>();
-		int size = children2.size();
-		for(int i = 0; i < size; i++){
-			Child c = children2.get(0);
-			int index = 0;
-			for(int j = 0; j < children2.size(); j++){
-				if(children2.get(j).fitness > c.fitness){
-					index = j;
-					c = children2.get(j);
-				}
-			}
-			childPool.add(c);
-			children2.remove(index);
-		}
-		return childPool;*/
-		
 		ArrayList<Child> listToUse = new ArrayList<Child>();
 		
 		for(int i = 0; i < children2.size(); i++){
