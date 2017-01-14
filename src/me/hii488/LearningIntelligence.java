@@ -36,9 +36,9 @@ public class LearningIntelligence {
 		else{
 			this.geneticAlg.sortedChildren = geneticAlg.fitnessSortedChildren(geneticAlg.children);
 			
-			if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) printFitnesses();
-			else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) printTop(this.settings.loggingSettings.topAmount);
-			else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) printAverage();
+			if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) System.out.println(printFitnesses());
+			else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) System.out.println(printTop(this.settings.loggingSettings.topAmount));
+			else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) System.out.println(printAverage());
 			
 			geneticAlg.nextGeneration();
 			speciesNumber = 0;
@@ -50,9 +50,9 @@ public class LearningIntelligence {
 	public void nextGeneration(){
 		this.geneticAlg.sortedChildren = geneticAlg.fitnessSortedChildren(geneticAlg.children);
 		
-		if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) printFitnesses();
-		else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) printTop(this.settings.loggingSettings.topAmount);
-		else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) printAverage();
+		if(this.settings.loggingSettings.printAll && settings.loggingSettings.printAnything) System.out.println(printFitnesses());
+		else if(this.settings.loggingSettings.printTop && settings.loggingSettings.printAnything) System.out.println(printTop(this.settings.loggingSettings.topAmount));
+		else if(this.settings.loggingSettings.printAverage && settings.loggingSettings.printAnything) System.out.println(printAverage());
 			
 		geneticAlg.nextGeneration();
 		generation++;
@@ -98,39 +98,41 @@ public class LearningIntelligence {
 		if(fitness > highestFitness) highestFitness = fitness;
 	}
 	
-	public void printFitnesses(){
-		System.out.println("Generation " + generation + " fitnesses:");
+	public String printFitnesses(){
+		String s = ("Generation " + generation + " fitnesses:\n");
 		float totalFitness = 0;
 		for(int i = 0; i < geneticAlg.children.size(); i++){
-			System.out.println("Child " + i + ": " + geneticAlg.children.get(i).fitness);
+			s +=("Child " + i + ": " + geneticAlg.children.get(i).fitness + "\n");
 			totalFitness += geneticAlg.children.get(i).fitness;
 		}
-		if(settings.loggingSettings.printAverage) System.out.println("Average Fitness: " + totalFitness / (geneticAlg.children.size()));
-		System.out.println("");
+		if(settings.loggingSettings.printAverage) s+=("Average Fitness: " + totalFitness / (geneticAlg.children.size()));
+		s += ("\n");
+		return s;
 	}
 	
-	public void printTop(int amount){
-		System.out.println("Generation " + generation + " top fitnesses:");
+	public String printTop(int amount){
+		String s = ("Generation " + generation + " top fitnesses:\n");
 		ArrayList<Child> c = geneticAlg.sortedChildren;
-		for(int i = 0; i < amount; i++)	System.out.println(i + " : " + c.get(c.size()-i-1).fitness);
+		for(int i = 0; i < amount; i++)	s += (i + " : " + c.get(c.size()-i-1).fitness);
 		
 		if(settings.loggingSettings.printAverage){
 			float totalFitness =0;
 			for(int i = 0; i < geneticAlg.children.size(); i++){
 				totalFitness += geneticAlg.children.get(i).fitness;
 			}
-			System.out.println("Average Fitness: " + totalFitness / (geneticAlg.children.size()+1));
+			s += ("Average Fitness: " + totalFitness / (geneticAlg.children.size()+1)+"\n");
 		}
 		
-		System.out.println("");
+		s +=("\n");
+		return s;
 	}
 	
-	public void printAverage() {
+	public String printAverage() {
 		float totalFitness =0;
 		for(int i = 0; i < geneticAlg.children.size(); i++){
 			totalFitness += geneticAlg.children.get(i).fitness;
 		}
-		System.out.println("Generation #" + generation + " Average Fitness: " + totalFitness / (geneticAlg.children.size()+1));
+		return ("Generation #" + generation + " Average Fitness: " + totalFitness / (geneticAlg.children.size()+1));
 	}
 	
 	// Only use if going through each child separately.
@@ -154,5 +156,9 @@ public class LearningIntelligence {
 			}
 		}
 		g.setColor(c);
+	}
+	
+	public String getGenerationPrintAsString(){
+		else return "";
 	}
 }
