@@ -1,6 +1,6 @@
 package me.hii488;
 
-import me.hii488.AISettings.NeuralSettings;
+import me.hii488.Settings.NeuralSettings;
 
 //Hierarchy : child -> layers -> nodes -> node-weights
 public class NeuralNetwork {

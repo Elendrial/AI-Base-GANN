@@ -3,7 +3,7 @@ package me.hii488;
 import java.util.Arrays;
 import java.util.Random;
 
-public class AISettings {
+public class Settings {
 	
 	public static Random rand = new Random();
 	
@@ -37,30 +37,37 @@ public class AISettings {
 		public int topAmount = 10;
 	}
 	
-	
 	public void printSettings(boolean neural, boolean generation, boolean logging){
+		System.out.println(settingsAsString(neural, generation, logging));
+	}
+	
+	public String settingsAsString(boolean neural, boolean generation, boolean logging){
+		String s = "";
 		if(neural){
-			System.out.println("Nodes in hidden layers: " + Arrays.toString(neuralSettings.nodesInHiddenLayers));
-			if(!neuralSettings.outputsAsFloats) System.out.println("outputs: " + Arrays.toString(neuralSettings.outputs));
-			System.out.println("cutoffThreshhold: " + neuralSettings.cutoffThreshhold);
+			s += ("Nodes in hidden layers: " + Arrays.toString(neuralSettings.nodesInHiddenLayers) + "\n");
+			if(!neuralSettings.outputsAsFloats) s +=  ("outputs: " + Arrays.toString(neuralSettings.outputs) + "\n");
+			s += ("cutoffThreshhold: " + neuralSettings.cutoffThreshhold + "\n");
 		}
-		
+
 		if(generation){
-			 System.out.println("Children per Gen: " + generationSettings.childrenPerGeneration);
-			 System.out.println("Children kept:" + generationSettings.additionalTopChildrenKept);
-			 System.out.println("Mutation: " + generationSettings.mutationChance);
-			 System.out.println("Top Mixed: " + generationSettings.mixTop);
+			s += ("Children per Gen: " + generationSettings.childrenPerGeneration + "\n");
+			s += ("Children kept:" + generationSettings.additionalTopChildrenKept + "\n");
+			s += ("Mutation: " + generationSettings.mutationChance + "\n");
+			s += ("Top Mixed: " + generationSettings.mixTop + "\n");
+			s += ("Insure Different: " + generationSettings.insureDifferent + "\n");
 		}
-		
+
 		if(logging){
-			System.out.println("Print at all: " + loggingSettings.printAnything);
+			s += ("Print at all: " + loggingSettings.printAnything + "\n");
 			if(loggingSettings.printAnything){
-				System.out.println("Print average: " + loggingSettings.printAverage);
-				System.out.println("Print all: " + loggingSettings.printAll);
-				System.out.println("Print top: " + loggingSettings.printTop);
-				if(loggingSettings.printTop) System.out.println("Top printed: " + loggingSettings.topAmount);
+				s += ("Print average: " + loggingSettings.printAverage + "\n");
+				s += ("Print all: " + loggingSettings.printAll + "\n");
+				s += ("Print top: " + loggingSettings.printTop + "\n");
+				if(loggingSettings.printTop) s += ("Top printed: " + loggingSettings.topAmount + "\n");
 			}
 		}
+		
+		return s;
 	}
 	
 }
