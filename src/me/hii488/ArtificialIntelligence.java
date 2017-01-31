@@ -12,10 +12,13 @@ public class ArtificialIntelligence {
 		learningAlg.settings = this.settings;
 		
 		learningAlg.neuralNet = this.neuralNet;
+		
+		learningAlg.setup();
 	}
 	
 	public void iterate(Object ...o){
 		learningAlg.iterate(o);
+		if(settings.loggingSettings.printAnything) learningAlg.printUpdate();
 	}
 	
 	public String[] getOutputs(float[] inputs, Object ...o){

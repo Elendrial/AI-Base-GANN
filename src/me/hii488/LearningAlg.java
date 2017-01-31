@@ -1,13 +1,17 @@
 package me.hii488;
 
-public class LearningAlg {
+abstract class LearningAlg {
 	public NeuralNetwork neuralNet;
 	public Settings settings;
 	
 	public float[] lastOutputValue = {};
 	public String[] lastOutput = {};
 	
-	public void iterate(Object o){}
+	abstract public void setup();
 	
-	public float[] getOutputs(float[] inputs, Object o){return null;}
+	abstract public void iterate(Object o);
+	
+	abstract public float[] getOutputs(float[] inputs, Object o);
+
+	abstract public void printUpdate();
 }

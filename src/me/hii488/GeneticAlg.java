@@ -13,6 +13,10 @@ public class GeneticAlg extends LearningAlg{
 	
 	public int generation = 0;
 	
+	public void setup(){
+		makeRandomGeneration();
+	}
+	
 	// TODO: Switch all the for loops to foreach loops
 	public void makeRandomGeneration(){
 		generation = 0;
@@ -131,7 +135,7 @@ public class GeneticAlg extends LearningAlg{
 	
 	@Override
 	public float[] getOutputs(float[] inputs, Object o){
-		return recurrentOutput(inputs, (int)o, 0);
+		return recurrentOutput(inputs, (int)(((Object[]) o)[0]), 0);
 	}
 	
 	public float[] recurrentOutput(float[] inputs, int child, int layer){
@@ -182,7 +186,7 @@ public class GeneticAlg extends LearningAlg{
 		if(fitness > highestFitness) highestFitness = fitness;
 	}
 	
-	public void printHandler(){
+	public void printUpdate(){
 		System.out.println(getGenerationInfoAsString());
 	}
 	
