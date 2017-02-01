@@ -91,7 +91,7 @@ public class NeuralNetwork {
 			
 			nodeNumber = number;
 			
-			weights = new float[(level != 0 ? settings.nodesInHiddenLayers[level-1] : settings.inputs) + 1];
+			weights = new float[(level != 0 ? settings.nodesInHiddenLayers[level-1] : settings.inputs) + 1]; // The +1 is for the threshold value.
 		}
 		
 		private Node(Node n){
@@ -107,7 +107,7 @@ public class NeuralNetwork {
 		
 		// Checks if the node will output a 0 or 1
 		public float activated(float[] inputs){
-			float temp = 0;
+			float temp = weights[weights.length-1]; // Set temp to the original threshold.
 			
 			for(int i = 0; i < inputs.length; i++){
 				temp += inputs[i] * weights[i];

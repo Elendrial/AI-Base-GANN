@@ -151,7 +151,7 @@ public class GeneticAlg extends LearningAlg{
 			output[i] = children.get(child).layers[layer].nodes[i].activated(inputs);
 		}
 		
-		return output;
+		return layer < neuralNet.settings.nodesInHiddenLayers.length ? recurrentOutput(output, child, layer+1) : output;
 	}
 	
 	
