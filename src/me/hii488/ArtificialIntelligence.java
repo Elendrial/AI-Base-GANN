@@ -5,6 +5,9 @@ public class ArtificialIntelligence {
 	public NeuralNetwork neuralNet = new NeuralNetwork();
 	public LearningAlg learningAlg;
 	
+	public ArtificialIntelligence(){
+		settings.parent = this;
+	}
 	
 	// Must run *AFTER* settings have been set.
 	public void initialSetup(){

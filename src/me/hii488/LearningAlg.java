@@ -14,4 +14,6 @@ abstract class LearningAlg {
 	abstract public float[] getOutputs(float[] inputs, Object o);
 
 	abstract public void printUpdate();
+
+	abstract public String settingsToString();
 }

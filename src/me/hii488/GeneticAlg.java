@@ -22,7 +22,7 @@ public class GeneticAlg extends LearningAlg{
 		generation = 0;
 		ArrayList<Child> childPool = new ArrayList<Child>();
 		
-		for(int i = 0; i < settings.generationSettings.childrenPerGeneration; i++){
+		for(int i = 0; i < genSettings.childrenPerGeneration; i++){
 			Child child = neuralNet.new Child();
 			
 			for(int layer = 0; layer < child.layers.length; layer++){
@@ -52,28 +52,28 @@ public class GeneticAlg extends LearningAlg{
 		
 		Child parentA;
 		Child parentB;
-		while(childPool.size() < settings.generationSettings.childrenPerGeneration){
+		while(childPool.size() < genSettings.childrenPerGeneration){
 			parentA = rouletteChoice(children);
 			do{parentB = rouletteChoice(children);} while(NeuralNetwork.areSimilar(parentA, parentB));
 			
-			if(settings.generationSettings.debug)	System.out.println("Parent A: " + parentA.fitness + "\nParent B: " + parentB.fitness);
+			if(genSettings.debug)	System.out.println("Parent A: " + parentA.fitness + "\nParent B: " + parentB.fitness);
 			
 			Child child = spliceChildren(parentA, parentB);
 			child = mutateChild(child);
 			
 			boolean different = true;
-			if(settings.generationSettings.insureDifferent)  // Just to insure you're not doing the same thing twice
+			if(genSettings.insureDifferent)  // Just to insure you're not doing the same thing twice
 				for(int j = 0; j < childPool.size() && different; j++)
 					if(NeuralNetwork.areSimilar(child, childPool.get(j))) different = false;
 			
 			if(different)
-				for(int j = 0; j < settings.generationSettings.additionalTopChildrenKept && different; j++)
+				for(int j = 0; j < genSettings.additionalTopChildrenKept && different; j++)
 					if(NeuralNetwork.areSimilar(child, sortedChildren.get(sortedChildren.size() - 1 - j))) different = false;
 			
 			if(different) childPool.add(child);
 		}
 		
-		for(int i = settings.generationSettings.additionalTopChildrenKept -1; i >= 0; i--)
+		for(int i = genSettings.additionalTopChildrenKept -1; i >= 0; i--)
 			childPool.add(sortedChildren.get(sortedChildren.size() - 1 - i));
 		
 		children = childPool;
@@ -82,8 +82,8 @@ public class GeneticAlg extends LearningAlg{
 	
 	public Child rouletteChoice(ArrayList<Child> incChildren){
 		ArrayList<Child> sChildren;
-		if(settings.generationSettings.mixTop != -1)
-			sChildren = new ArrayList<Child>(sortedChildren.subList(incChildren.size()-1-settings.generationSettings.mixTop, incChildren.size()));
+		if(genSettings.mixTop != -1)
+			sChildren = new ArrayList<Child>(sortedChildren.subList(incChildren.size()-1-genSettings.mixTop, incChildren.size()));
 		else 
 			sChildren = incChildren;
 		
@@ -108,7 +108,7 @@ public class GeneticAlg extends LearningAlg{
 		for(int i = 0; i < child.layers.length; i++){
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
 				final int crosspoint = Settings.rand.nextInt(i == 0 ? neuralNet.settings.inputs : child.layers[i].nodes[j].weights.length-2)+1;
-				if(settings.generationSettings.debug) System.out.println("Crosspoint: " + crosspoint);
+				if(genSettings.debug) System.out.println("Crosspoint: " + crosspoint);
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(k >= crosspoint){
 						child.layers[i].nodes[j].weights[k] = b.layers[i].nodes[j].weights[k];
@@ -124,7 +124,7 @@ public class GeneticAlg extends LearningAlg{
 		for(int i = 0; i < child.layers.length; i++){
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
-					if(Settings.rand.nextFloat() <= settings.generationSettings.mutationChance){
+					if(Settings.rand.nextFloat() <= genSettings.mutationChance){
 						child.layers[i].nodes[j].weights[k] += (Settings.rand.nextBoolean() == true) ? (Settings.rand.nextFloat()/5) * -1 : Settings.rand.nextFloat()/5;
 					}
 				}
@@ -186,6 +186,7 @@ public class GeneticAlg extends LearningAlg{
 		if(fitness > highestFitness) highestFitness = fitness;
 	}
 	
+	@Override
 	public void printUpdate(){
 		System.out.println(getGenerationInfoAsString());
 	}
@@ -256,6 +257,27 @@ public class GeneticAlg extends LearningAlg{
 			}
 		}
 		g.setColor(c);
+	}
+	
+	public String settingsToString(){
+		String s = "";
+		s += ("Children per Gen: " + genSettings.childrenPerGeneration + "\n");
+		s += ("Children kept:" + genSettings.additionalTopChildrenKept + "\n");
+		s += ("Mutation: " + genSettings.mutationChance + "\n");
+		s += ("Top Mixed: " + genSettings.mixTop + "\n");
+		s += ("Insure Different: " + genSettings.insureDifferent + "\n");
+		return s;
+	}
+	
+	public GenerationSettings genSettings = new GenerationSettings();
+	public class GenerationSettings{
+		public int childrenPerGeneration = 0;       // The amount of newly generated children, the greater the value, the faster the learning between generations, but longer time taken per gen.
+		public int additionalTopChildrenKept = 0;   // The amount of children with highscores carried on between generations, to prevent possible accidental regression
+		public float mutationChance = 0;            // The chance of each one of a new child's weights randomly changing, recommended is very small, max is 1f 
+		public int mixTop = -1;						// The amount of children that can be mixed to make the next generation, -1 means all children can be
+		public boolean insureDifferent = false;     // Insures that all children per generation are unique - not necessary, and possibly expensive to check
+		
+		public boolean debug = false;				// prints a load of stuff to console, would not recommend having on.
 	}
 	
 }
