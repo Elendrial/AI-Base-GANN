@@ -64,7 +64,7 @@ public class NeuralNetwork {
 			}
 			
 			for(int i = 0; i < nodes.length; i++){
-				nodes[i] = new Node(layerLevel, i);
+				nodes[i] = new Node(layerLevel);
 			}
 		}
 		
@@ -85,17 +85,15 @@ public class NeuralNetwork {
 	
 	public class Node{
 		public float[] weights;
-		public final int nodeNumber;
+		public float[] weightDiffs; // for backprop
+		public float lastOutput = 0f;
 		
-		public Node(int level, int number){
-			
-			nodeNumber = number;
-			
+		public Node(int level){
 			weights = new float[(level != 0 ? settings.nodesInHiddenLayers[level-1] : settings.inputs) + 1]; // The +1 is for the threshold value.
+			weightDiffs = new float[weights.length];
 		}
 		
 		private Node(Node n){
-			nodeNumber = n.nodeNumber;
 			weights = n.weights.clone();
 		}
 		
@@ -114,7 +112,8 @@ public class NeuralNetwork {
 			}
 			
 			// Sigmoid function
-			return (float) (1/(1 + Math.pow(Math.E, -temp)));
+			lastOutput = (float) (1/(1 + Math.pow(Math.E, -temp)));
+			return lastOutput;
 		}
 	}
 }
