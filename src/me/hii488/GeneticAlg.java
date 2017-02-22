@@ -9,9 +9,10 @@ import me.hii488.NeuralNetwork.Child;
 public class GeneticAlg extends LearningAlg{
 	
 	public ArrayList<Child> children = new ArrayList<Child>();
-	ArrayList<Child> sortedChildren = new ArrayList<Child>();
+	public ArrayList<Child> sortedChildren = new ArrayList<Child>();
 	
 	public int generation = 0;
+	public boolean alreadySorted = false;
 	
 	public void setup(){
 		makeRandomGeneration();
@@ -45,8 +46,7 @@ public class GeneticAlg extends LearningAlg{
 	
 	public void nextGeneration(){
 		generation++;
-		sortedChildren = fitnessSortedChildren(children);
-		
+		if(!alreadySorted) sortedChildren = fitnessSortedChildren(children);
 		
 		ArrayList<Child> childPool = new ArrayList<Child>();
 		
@@ -77,6 +77,7 @@ public class GeneticAlg extends LearningAlg{
 			childPool.add(sortedChildren.get(sortedChildren.size() - 1 - i));
 		
 		children = childPool;
+		alreadySorted = false;
 	}
 	
 	
@@ -173,7 +174,8 @@ public class GeneticAlg extends LearningAlg{
 			}
 			listToUse.set(j,c);
 		}
-		    
+		
+		alreadySorted = true;
 		return listToUse;
 	}
 	

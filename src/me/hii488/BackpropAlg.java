@@ -7,8 +7,8 @@ import me.hii488.NeuralNetwork.Node;
 public class BackpropAlg extends LearningAlg{
 
 	public Child c;
-	public float momentum = 0f;
-	public float learningRate;
+	public float momentum = 0.01f;
+	public float learningRate = 0.01f;
 	
 	public float[][] thresholdDiff;
 	public float[][] error;
@@ -25,6 +25,11 @@ public class BackpropAlg extends LearningAlg{
 			}
 		}
 		
+		error = new float[c.layers.length][];
+		for(int i = 0; i < error.length; i++){
+			error[i] = new float[c.layers[i].nodes.length];
+			for(int j = 0; j < error[i].length; j++) error[i][j] = 0;
+		}
 	}
 
 	@Override
