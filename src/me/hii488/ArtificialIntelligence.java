@@ -20,8 +20,8 @@ public class ArtificialIntelligence {
 	}
 	
 	public void iterate(Object ...o){
-		learningAlg.iterate(o);
 		if(settings.loggingSettings.printAnything) learningAlg.printUpdate();
+		learningAlg.iterate(o);
 	}
 	
 	public String[] getOutputs(float[] inputs, Object ...o){
