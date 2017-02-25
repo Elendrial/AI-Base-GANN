@@ -126,7 +126,7 @@ public class GeneticAlg extends LearningAlg{
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(Settings.rand.nextFloat() <= genSettings.mutationChance){
-						child.layers[i].nodes[j].weights[k] += (Settings.rand.nextBoolean() == true) ? (Settings.rand.nextFloat()/5) * -1 : Settings.rand.nextFloat()/5;
+						child.layers[i].nodes[j].weights[k] += ((Settings.rand.nextBoolean() == true) ? (Settings.rand.nextFloat()/5) * -1 : Settings.rand.nextFloat()/5)*genSettings.mutateMultiplier;
 					}
 				}
 			}
@@ -265,9 +265,10 @@ public class GeneticAlg extends LearningAlg{
 		String s = "";
 		s += ("Children per Gen: " + genSettings.childrenPerGeneration + "\n");
 		s += ("Children kept:" + genSettings.additionalTopChildrenKept + "\n");
-		s += ("Mutation: " + genSettings.mutationChance + "\n");
+		s += ("Mutation Chance: " + genSettings.mutationChance + "\n");
+		s += ("Mutation Multiplier: " + genSettings.mutateMultiplier);
 		s += ("Top Mixed: " + genSettings.mixTop + "\n");
-		s += ("Insure Different: " + genSettings.insureDifferent + "\n");
+		s += ("Insure Different: " + genSettings.insureDifferent);
 		return s;
 	}
 	
@@ -276,6 +277,7 @@ public class GeneticAlg extends LearningAlg{
 		public int childrenPerGeneration = 0;       // The amount of newly generated children, the greater the value, the faster the learning between generations, but longer time taken per gen.
 		public int additionalTopChildrenKept = 0;   // The amount of children with highscores carried on between generations, to prevent possible accidental regression
 		public float mutationChance = 0;            // The chance of each one of a new child's weights randomly changing, recommended is very small, max is 1f 
+		public float mutateMultiplier = 1f;			// The amount the mutation is multiplied by
 		public int mixTop = -1;						// The amount of children that can be mixed to make the next generation, -1 means all children can be
 		public boolean insureDifferent = false;     // Insures that all children per generation are unique - not necessary, and possibly expensive to check
 		
