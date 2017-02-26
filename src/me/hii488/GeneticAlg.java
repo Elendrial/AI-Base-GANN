@@ -266,9 +266,9 @@ public class GeneticAlg extends LearningAlg{
 		s += ("Children per Gen: " + genSettings.childrenPerGeneration + "\n");
 		s += ("Children kept:" + genSettings.additionalTopChildrenKept + "\n");
 		s += ("Mutation Chance: " + genSettings.mutationChance + "\n");
-		s += ("Mutation Multiplier: " + genSettings.mutateMultiplier);
+		s += ("Mutation Multiplier: " + genSettings.mutateMultiplier + "\n");
 		s += ("Top Mixed: " + genSettings.mixTop + "\n");
-		s += ("Insure Different: " + genSettings.insureDifferent);
+		s += ("Insure Different: " + genSettings.insureDifferent + "\n");
 		return s;
 	}
 	

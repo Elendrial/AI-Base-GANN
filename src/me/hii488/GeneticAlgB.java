@@ -121,6 +121,17 @@ public class GeneticAlgB extends GeneticAlg {
 		return child;
 	}
 	
+	@Override
+	public String settingsToString(){
+		String s = super.settingsToString();
+		
+		s += ("Additional To Mix: " + genSettingsB.additionalToMix + "\n");
+		s += ("Additional Random Kept: " + genSettingsB.additionalRandKept + "\n");
+		s += ("Lowest <x> Potentially Kept:" + genSettingsB.lowestXPotentiallyKept + "\n");
+		
+		return s;
+	}
+	
 	public GenerationSettingsB genSettingsB = new GenerationSettingsB();
 	public class GenerationSettingsB {
 		public int additionalToMix = 10;
