@@ -1,8 +1,8 @@
 package me.hii488;
 
 abstract class LearningAlg {
-	public NeuralNetwork neuralNet;
-	public Settings settings;
+	protected NeuralNetwork neuralNet; // Should be taken from the main AI class to create less confusion.
+	protected Settings settings;
 	
 	public float[] lastOutputValue = {};
 	public String[] lastOutput = {};
@@ -16,4 +16,5 @@ abstract class LearningAlg {
 	abstract public void printUpdate();
 
 	abstract public String settingsToString();
+	
 }

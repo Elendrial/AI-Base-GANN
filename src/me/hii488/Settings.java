@@ -1,10 +1,13 @@
 package me.hii488;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Settings {
-	
+public class Settings implements Serializable{
+
+	private static final long serialVersionUID = -6787874469627035312L;
+
 	public static Random rand = new Random();
 	
 	public NeuralSettings neuralSettings = this.new NeuralSettings();
@@ -12,7 +15,8 @@ public class Settings {
 	
 	public ArtificialIntelligence parent;
 	
-	public class NeuralSettings{
+	public class NeuralSettings implements Serializable{
+		private static final long serialVersionUID = -2668472525254063033L;
 		public int[] nodesInHiddenLayers = {};		// The amount of nodes each hidden layer of the net will have, limits depend on capabilities of system
 		public int inputs = 0;              		// The amount of inputs the neural net will be given
 		public String[] outputs = {};       		// The outputs you wish the neural net to give out
@@ -20,7 +24,8 @@ public class Settings {
 		public boolean outputsAsFloats = false;		// Makes the program ignore the 'output' mappings and cutoff and give the raw float outputs (outputs still needs to have the length of the # of outputs wanted)
 	}
 	
-	public class LoggingSettings{
+	public class LoggingSettings implements Serializable{
+		private static final long serialVersionUID = 654897373710753279L;
 		public boolean printAnything = true;
 		public boolean printAll = true;
 		public boolean printAverage = true;

@@ -1,6 +1,9 @@
 package me.hii488;
 
-public class ArtificialIntelligence {
+import java.io.Serializable;
+
+public class ArtificialIntelligence implements Serializable{
+	private static final long serialVersionUID = -5288451883570073854L;
 	public Settings settings = new Settings();
 	public NeuralNetwork neuralNet = new NeuralNetwork();
 	public LearningAlg learningAlg;
@@ -44,5 +47,18 @@ public class ArtificialIntelligence {
 		else for(int i = 0; i < neuralNet.settings.outputs.length; i++) s[i] = "" + outputValues[i];
 		
 		return s;
+	}
+ 	
+ 	public void saveNetwork(String filename){
+ 		FileIO.openSerialize(filename);
+ 		FileIO.serialize(this);
+ 		FileIO.endSerialize();
+	}
+	
+	public static ArtificialIntelligence loadNetwork(String filename){
+		ArtificialIntelligence ai = (ArtificialIntelligence) FileIO.deserialize(filename);
+		ai.learningAlg.settings = ai.settings;
+		ai.learningAlg.neuralNet = ai.neuralNet;
+		return ai;
 	}
 }

@@ -1,10 +1,16 @@
 package me.hii488;
 
+import java.io.Serializable;
+
 import me.hii488.Settings.NeuralSettings;
 
 //Hierarchy : child -> layers -> nodes -> node-weights
-public class NeuralNetwork {
+public class NeuralNetwork implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1508254350729328366L;
 	public NeuralSettings settings;
 	
 	public static boolean areSimilar(Child a, Child b){
@@ -23,7 +29,8 @@ public class NeuralNetwork {
 		return true;
 	}
 	
-	public class Child{
+	public class Child implements Serializable{
+		private static final long serialVersionUID = -5046688404207330509L;
 		public Layer[] layers;
 		public float fitness = 0;
 		
@@ -49,7 +56,8 @@ public class NeuralNetwork {
 		
 	}
 	
-	public class Layer{
+	public class Layer implements Serializable{
+		private static final long serialVersionUID = 1309078945334240516L;
 		public Node[] nodes;
 		public final int layerLevel;
 		
@@ -83,7 +91,8 @@ public class NeuralNetwork {
 		}
 	}
 	
-	public class Node{
+	public class Node implements Serializable{
+		private static final long serialVersionUID = -4074893277872952213L;
 		public float[] weights;
 		public float[] weightDiffs; // for backprop
 		public float lastOutput = 0f;
@@ -114,6 +123,21 @@ public class NeuralNetwork {
 			// Sigmoid function
 			lastOutput = (float) (1/(1 + Math.pow(Math.E, -temp)));
 			return lastOutput;
+		}
+	}
+	
+	public void saveToFile(String path){
+		FileIO.openSerialize(path);
+		FileIO.serialize(this);
+		FileIO.endSerialize();
+	}
+	
+	public static NeuralNetwork readFromFile(String filename){
+		try {
+			return (NeuralNetwork) FileIO.deserialize(filename);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }

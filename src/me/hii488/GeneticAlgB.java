@@ -34,6 +34,9 @@ public class GeneticAlgB extends GeneticAlg {
 	 *  		split up the methods... (I probably wont)
 	 */
 	
+
+	private static final long serialVersionUID = -1666909929529921193L;
+
 	@Override
 	public Child rouletteChoice(ArrayList<Child> incChildren){
 		ArrayList<Child> sChildren;
@@ -138,5 +141,5 @@ public class GeneticAlgB extends GeneticAlg {
 		public int additionalRandKept = 5;
 		public int lowestXPotentiallyKept = 20;
 	}
-	
+
 }

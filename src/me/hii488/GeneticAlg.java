@@ -2,12 +2,14 @@ package me.hii488;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import me.hii488.NeuralNetwork.Child;
 
-public class GeneticAlg extends LearningAlg{
+public class GeneticAlg extends LearningAlg implements Serializable{
 	
+	private static final long serialVersionUID = -3617386076611162030L;
 	public ArrayList<Child> children = new ArrayList<Child>();
 	public ArrayList<Child> sortedChildren = new ArrayList<Child>();
 	
@@ -273,7 +275,9 @@ public class GeneticAlg extends LearningAlg{
 	}
 	
 	public GenerationSettings genSettings = new GenerationSettings();
-	public class GenerationSettings{
+	public class GenerationSettings implements Serializable{
+		private static final long serialVersionUID = 2459487541759100124L;
+		
 		public int childrenPerGeneration = 0;       // The amount of newly generated children, the greater the value, the faster the learning between generations, but longer time taken per gen.
 		public int additionalTopChildrenKept = 0;   // The amount of children with highscores carried on between generations, to prevent possible accidental regression
 		public float mutationChance = 0;            // The chance of each one of a new child's weights randomly changing, recommended is very small, max is 1f 

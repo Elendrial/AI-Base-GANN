@@ -1,11 +1,14 @@
 package me.hii488;
 
+import java.io.Serializable;
+
 import me.hii488.NeuralNetwork.Child;
 import me.hii488.NeuralNetwork.Layer;
 import me.hii488.NeuralNetwork.Node;
 
-public class BackpropAlg extends LearningAlg{
+public class BackpropAlg extends LearningAlg implements Serializable{
 
+	private static final long serialVersionUID = -7341054970937114633L;
 	public Child c;
 	public float momentum = 0.01f;
 	public float learningRate = 0.01f;
