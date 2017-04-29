@@ -1,5 +1,6 @@
 package me.hii488;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import me.hii488.NeuralNetwork.Child;
@@ -136,7 +137,8 @@ public class GeneticAlgB extends GeneticAlg {
 	}
 	
 	public GenerationSettingsB genSettingsB = new GenerationSettingsB();
-	public class GenerationSettingsB {
+	public class GenerationSettingsB implements Serializable{
+		private static final long serialVersionUID = -1786754969232358323L;
 		public int additionalToMix = 10;
 		public int additionalRandKept = 5;
 		public int lowestXPotentiallyKept = 20;
