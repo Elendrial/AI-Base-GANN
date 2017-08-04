@@ -54,6 +54,23 @@ public class NeuralNetwork implements Serializable{
 			return new Child(this);
 		}
 		
+		public boolean equals(Object o){
+			if(!(o instanceof Child)) return false;
+			if(((Child) o).layers.length != this.layers.length) return false;
+			
+			for(int layer = 0; layer < ((Child) o).layers.length; layer++){
+				if(((Child) o).layers[layer].nodes.length != this.layers[layer].nodes.length) return false;
+				for(int node = 0; node < ((Child) o).layers[layer].nodes.length; node++){
+					if(((Child) o).layers[layer].nodes[node].weights.length != this.layers[layer].nodes[node].weights.length) return false;
+					for(int weight = 0; weight < ((Child) o).layers[layer].nodes[node].weights.length; weight++){
+						if(((Child) o).layers[layer].nodes[node].weights[weight] != this.layers[layer].nodes[node].weights[weight]) return false;
+					}
+				}
+			}
+			
+			return true;
+		}
+		
 	}
 	
 	public class Layer implements Serializable{
