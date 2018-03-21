@@ -78,7 +78,8 @@ public class GeneticAlgB extends GeneticAlg {
 		boolean different;
 		while(childPool.size() < genSettings.childrenPerGeneration){
 			parentA = rouletteChoice(children);
-			do{parentB = rouletteChoice(children);} while(NeuralNetwork.areSimilar(parentA, parentB));
+			do{	parentB = rouletteChoice(children);	} 
+			while(NeuralNetwork.areSimilar(parentA, parentB));
 			
 			if(genSettings.debug)	System.out.println("Parent A: " + parentA.fitness + "\nParent B: " + parentB.fitness);
 			

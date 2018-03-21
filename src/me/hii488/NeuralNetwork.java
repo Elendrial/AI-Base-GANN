@@ -69,6 +69,15 @@ public class NeuralNetwork implements Serializable{
 			return true;
 		}
 		
+		public String toString() {
+			String s = layers.length + "l;" + fitness + "f;";
+			int l = layers.length > 1 ? 1 : 0;
+			for(int i = 0; i < (layers[l].nodes[0].weights.length > 10 ? 10 : layers[0].nodes[0].weights.length); i++) {
+				s+= (layers[l].nodes[0].weights[i] + "").substring(0, 4) + ";";
+			}
+			return s;
+		}
+		
 	}
 	
 	public class Layer implements Serializable{
