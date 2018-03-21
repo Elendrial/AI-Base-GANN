@@ -128,7 +128,7 @@ public class GeneticAlg extends LearningAlg implements Serializable{
 			for(int j = 0; j < child.layers[i].nodes.length; j++){
 				for(int k = 0; k < child.layers[i].nodes[j].weights.length; k++){
 					if(Settings.rand.nextFloat() <= genSettings.mutationChance){
-						child.layers[i].nodes[j].weights[k] += ((Settings.rand.nextBoolean() == true) ? (Settings.rand.nextFloat()/5) * -1 : Settings.rand.nextFloat()/5)*genSettings.mutateMultiplier;
+						child.layers[i].nodes[j].weights[k] += (Settings.rand.nextBoolean() ? (Settings.rand.nextFloat()/5) * -1 : Settings.rand.nextFloat()/5)*genSettings.mutateMultiplier;
 					}
 				}
 			}

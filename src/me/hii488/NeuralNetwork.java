@@ -7,9 +7,7 @@ import me.hii488.Settings.NeuralSettings;
 //Hierarchy : child -> layers -> nodes -> node-weights
 public class NeuralNetwork implements Serializable{
 	
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1508254350729328366L;
 	public NeuralSettings settings;
 	

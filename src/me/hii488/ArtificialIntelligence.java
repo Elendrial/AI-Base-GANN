@@ -27,6 +27,11 @@ public class ArtificialIntelligence implements Serializable{
 		learningAlg.iterate(o);
 	}
 	
+	public float[] getOutputsAsFloat(float[] inputs, Object ...o) {
+		getOutputs(inputs, o);
+		return learningAlg.lastOutputValue.clone();
+	}
+	
 	public String[] getOutputs(float[] inputs, Object ...o){
 		float[] f = learningAlg.getOutputs(inputs, o);
 		learningAlg.lastOutputValue = f;
@@ -34,7 +39,7 @@ public class ArtificialIntelligence implements Serializable{
 		String[] s = outputValuesToString(f);
 		learningAlg.lastOutput = s;
 		
-		return s;
+		return s.clone();
 	}
 	
  	public String[] outputValuesToString(float[] outputValues){
