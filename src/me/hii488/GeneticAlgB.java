@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import me.hii488.NeuralNetwork.Child;
 
 public class GeneticAlgB extends GeneticAlg {
-	/* Should be a slightly more efficient (over time) version of GeneticAlg
+	/* Should be a slightly more efficient (over time) version of GeneticAlg, not tested formally.
 	 * 
 	 * How and why:
 	 * 		Allows mixing of children with lower fitnesses, to keep some more unpredictable behaviour.
 	 * 		This unpredictable behaviour is sometimes favourable when used in conjunction with behaviour that
-	 * 			grants higher fitnesses earlier, improving overall perfomance.
+	 * 			grants higher fitnesses earlier, improving overall performance.
 	 * 		
 	 * 		This is more efficient than simply waiting to strike lucky with mutation or hoping to develop a
 	 * 			gene-line that already incorporates this from the outset.
@@ -30,6 +30,7 @@ public class GeneticAlgB extends GeneticAlg {
 	 * 	
 	 * Additional:
 	 * 		Also implements a "heavyMutate(n)" method, which mutates every single value by the normal mutateMultiplier/n
+	 * 		This is run every <n> generations, on <f>% of the
 	 *  
 	 *  	Annoying that I have to copy entire methods just to add/change a very small amount of code, maybe I should
 	 *  		split up the methods... (I probably wont)
@@ -98,6 +99,10 @@ public class GeneticAlgB extends GeneticAlg {
 			if(different) childPool.add(child);
 		}
 		
+		if(generation % genSettingsB.heavyMutateRate == 0)
+			for(int i = 0; i < genSettingsB.heavyMutateAmount * childPool.size(); i++) 
+				heavyMutateChild(childPool.get(i));
+		
 		for(int i = genSettings.additionalTopChildrenKept -1; i >= 0; i--)
 			childPool.add(sortedChildren.get(sortedChildren.size() - 1 - i));
 		
@@ -140,9 +145,12 @@ public class GeneticAlgB extends GeneticAlg {
 	public GenerationSettingsB genSettingsB = new GenerationSettingsB();
 	public class GenerationSettingsB implements Serializable{
 		private static final long serialVersionUID = -1786754969232358323L;
-		public int additionalToMix = 10;
+		public int additionalToMix = 10;        // The amount of children NOT ranked within the top "mixTop" to be added to the mixing group
 		public int additionalRandKept = 5;
-		public int lowestXPotentiallyKept = 20;
+		public int lowestXPotentiallyKept = 20; // This is the upper bound of rank of random child kept, ie: no random child would be above the bottom n.
+		
+		public int heavyMutateRate = 10;        // How often the heavy mutate function is used
+		public float heavyMutateAmount = 0.5f;  // How much of the population is heavily mutated
 	}
 
 }
