@@ -227,10 +227,12 @@ public class GeneticAlg extends LearningAlg implements Serializable{
 	
 	public String printAverage() {
 		float totalFitness =0;
+		float highest = 0;
 		for(int i = 0; i < this.children.size(); i++){
 			totalFitness += this.children.get(i).fitness;
+			if(children.get(i).fitness > highest) highest = children.get(i).fitness;
 		}
-		return ("Generation #" + generation + " Average Fitness: " + totalFitness / (this.children.size()+1));
+		return ("Gen #" + generation + "\tAvg: " + totalFitness / (this.children.size()+1) + "\tTop: " + highest);
 	}
 	
 	public String getGenerationInfoAsString(){
